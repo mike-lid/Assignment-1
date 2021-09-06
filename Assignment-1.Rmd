@@ -1,6 +1,6 @@
 ---
 title: "Assignment-01"
-author: "mike-lid"
+author: "mike-lid and JebP"
 date: "9/6/2021"
 output: html_document
 ---
@@ -17,7 +17,7 @@ output: html_document
 
   commercialparking <- st_read("CommParking.geojson")
   meters <- st_read("MetParking.shp.zip")
-  open-space <- st_read ("OpenSpace.shp.zip")
+  openspace <- st_read ("OpenSpace.shp.zip")
 ```
 
 ```{r}
@@ -35,7 +35,7 @@ dev.off()
 ```{r}
 parking_plot +
   geom_sf(data = historic2) +
-  geom_sf(data = meters)
+  geom_sf(data = openspace)
   
 ```
 
