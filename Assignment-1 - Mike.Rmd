@@ -23,8 +23,9 @@ output: html_document
 ```{r}
 parking_plot <- ggplot(commercialparking) +
   geom_sf(shape = 20, color = "#CC0066", size = 3)
+
 parking_plot +
-  geom_sf(data = historic2) +
+  geom_sf(data = meters) +
   geom_sf(data = openspace)
   
 ```
