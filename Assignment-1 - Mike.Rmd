@@ -10,6 +10,7 @@ output: html_document
   library(tidyverse)
   library(ggspatial)
   library(ggthemes)
+  library(maptools)
 ```
 
 ```{r load packages, message=FALSE}
@@ -21,15 +22,71 @@ output: html_document
 ```
 
 ```{r}
+#PLOT ONE --- UGLY MAP ----------------
 parking_plot <- ggplot(commercialparking) +
   geom_sf(shape = 20, color = "#CC0066", size = 3)
 
 parking_plot +
   geom_sf(data = meters) +
   geom_sf(data = openspace)
-  
 ```
 
+```{r}
+
+ggplot()+
+ #BASE MAP
+      annotation_map_tile(
+        zoomin = 0, 
+        progress = "none", 
+        type = "cartolight") +
+  
+  #DATA
+      #commercial parking
+        geom_sf(
+        data = commercialparking, 
+        aes(fill="Commercial Parking Lots"), 
+        alpha = .7, 
+        color = "aquamarine"
+        ) +
+      #metered parking
+      geom_sf(
+        data = meters, 
+        color = "black", 
+        aes(fill="Metered Parking")
+        ) +
+      #open space
+      geom_sf(
+        data = openspace, 
+        aes(fill="Parks"), 
+        alpha = 0.25, 
+        color = "tan",
+        ) +
+  
+  #APPEARANCE
+      #themes
+      scale_fill_manual(values = c("aquamarine", "black", "tan"), name = "") +
+      scale_color_manual(values = c("aquamarine", "black", "tan"), name = "") +
+      
+      
+      #add a scale + arrow
+      annotation_scale(
+        pad_x = unit(10, "cm"),
+        pad_y = unit(0, "cm")) + 
+      annotation_north_arrow(
+        pad_x = unit(10, "cm"),
+        pad_y = unit(1, "cm"),
+        height = unit(0.5, "cm"),
+        width = unit(0.5, "cm"),
+        
+        #north arrow style
+        style = north_arrow_orienteering(
+          text_size = 1
+          ))
+  
+  theme(panel.background = element_rect (fill = NA), 
+        legend.key = element_rect(fill = NA))
+```
+  
 ```{r}
 #plotting a 3in x 5in image of 300ppi
 #can replace "jpeg" with "png" or "pdf"
