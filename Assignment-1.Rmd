@@ -4,7 +4,7 @@ author: "mike-lid", "JebP"
 date: "9/6/2021"
 output: html_document
 ---
-```{r load packages, message=FALSE}
+```{r load packages, include=FALSE}
 #above line labels the code chunk as "load packages" without seeing any of the package loading messages
   library (sf)
   library(tidyverse)
@@ -12,7 +12,7 @@ output: html_document
   library(ggthemes)
 ```
 
-```{r load packages, message=FALSE}
+```{r establish files, incldue=FALSE}
 #the following data includes commercial parking locations in Cambridge, polygon data of metered parking spots, and boundaries for open space. We are curious to see the relationship between available Cambridge parking and locations of open/green space.
 
   commercialparking <- st_read("CommParking.geojson")
