@@ -34,7 +34,12 @@ parking_plot +
 ```{r}
 
 ggplot()+
- #BASE MAP
+ #TITLE + AXIS LABELS
+        ggtitle("CAMBRIDGE PARKING IN RELATION TO OPEN SPACE")+
+        xlab("LONGITUDE")+
+        ylab("LATITUDE")+
+
+  #BASE MAP
       annotation_map_tile(
         zoomin = 0, 
         progress = "none", 
@@ -66,15 +71,23 @@ ggplot()+
       #themes
       scale_fill_manual(values = c("aquamarine", "black", "tan"), name = "") +
       scale_color_manual(values = c("aquamarine", "black", "tan"), name = "") +
-      
-      
+  
       #add a scale + arrow
       annotation_scale(
-        pad_x = unit(10, "cm"),
-        pad_y = unit(0, "cm")) + 
+        pad_x = unit(8, "cm"),
+        pad_y = unit(.5, "cm"),
+        plot_unit = NULL,
+        bar_cols = c("black", NA),
+        line_width = .125,
+        height = unit(0.125, "cm"),
+        text_pad = unit(0.15, "cm"),
+        text_cex = 0.7,
+        text_face = NULL,
+        text_family = "",
+        tick_height = 0.4) + 
       annotation_north_arrow(
-        pad_x = unit(10, "cm"),
-        pad_y = unit(1, "cm"),
+        pad_x = unit(7, "cm"),
+        pad_y = unit(.25, "cm"),
         height = unit(0.5, "cm"),
         width = unit(0.5, "cm"),
         
