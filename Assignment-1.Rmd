@@ -12,10 +12,12 @@ output: html_document
   library(ggthemes)
 ```
 
-```{r load datasets, message=FALSE}
-commercialparking <- st_read("CommParking.geojson")
-meters <- st_read("MetParking.zip")
-historic <- st_read("HistDist.kml")
+```{r}
+#the following data includes commercial parking locations in Cambridge, polygon data of metered parking spots, and boundaries for historic districts. I'm curious to see the relationship between available Cambridge parking and the historic districts.
+
+  commercialparking <- st_read("CommParking.geojson")
+  meters <- st_read("MetParking.shp.zip")
+  historic <- st_read("HistDist.kml")
 ```
 
 ```{r}
