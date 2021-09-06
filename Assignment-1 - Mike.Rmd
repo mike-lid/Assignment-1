@@ -35,9 +35,29 @@ parking_plot +
 
 ggplot()+
  #TITLE + AXIS LABELS
-        ggtitle("CAMBRIDGE PARKING IN RELATION TO OPEN SPACE")+
-        xlab("LONGITUDE")+
+        #TITLE
+        ggtitle("CAMBRIDGE PARKING IN RELATION TO OPEN SPACE") +
+        theme(
+          plot.title = element_text(
+            color="black", 
+            size=10, 
+            face="bold.italic", #FONT FACE OPTIONS = PLAIN, BOLD, BOLD.ITALIC, ITALIC
+            family = "sans,Helvetica",
+            hjust = 1))+ #adjust title to center it
+            
+        #X AXIS
+        xlab("LONGITUDE") +
+        theme(
+          axis.title.x = element_text(
+            size=8,
+            family = "sans,Helvetica")) +
+  
+        #Y AXIS
         ylab("LATITUDE")+
+        theme(
+          axis.title.y = element_text(
+            size=8, family = "sans,Helvetica")) +
+  
 
   #BASE MAP
       annotation_map_tile(
