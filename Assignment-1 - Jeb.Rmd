@@ -42,39 +42,34 @@ parking_plot +
 
 #changing symbology again
 ```{r}
-ggplot() +
+
+#finding centroids of metered parking polygons
+ggplot(st_centroid(meters)) +
+  geom_sf(
+    size = 0.5,
+    shape = 20,
+    color = "brown1",
+    alpha = 0.2    
+    ) +
   
-ggtitle("Cambridge Park(ing)") +
+#TITLE
+  ggtitle("Cambridge Park(ing)") +
   
 #BASE MAP
-    annotation_map_tile(
-    zoomin = 0, 
-    progress = "none", 
-    type = "cartolight") +
-    geom_sf() +
-    labs(caption = "Map tiles and data by OpenStreetMap") +
   
 #DATA 
    geom_sf(
     data = openspace, 
     color = NA, 
-    aes(fill = "Open Space")
-    ) +
-  geom_sf(
-    data = meters, 
-    fill = "darkorange",
-    aes(color = "Parking Meters")
+    fill = "forestgreen"
     ) +
   geom_sf(
     data = commercialparking, 
     shape = 20, 
     size = 3, 
-    fill = NA,
-    aes(color = "Commercial Parking")
+    color = "brown1"
     ) +
   
-  scale_color_manual(values = c("blue", "darkorange"), name = "") +
-  scale_fill_manual(values = "forestgreen", name = "") +
   
   theme_void()
 
@@ -103,7 +98,7 @@ ggtitle("Cambridge Park(ing)") +
     ) +
   geom_sf(
     data = meters, 
-    fill = NA,
+    fill = "white",
     aes(color = "Parking Meters")
     ) +
   geom_sf(
