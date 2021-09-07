@@ -4,6 +4,7 @@ author: "mike-lid", "JebP"
 date: "9/6/2021"
 output: html_document
 ---
+
 ```{r load packages, message=FALSE}
 #above line labels the code chunk as "load packages" without seeing any of the package loading messages
   library (sf)
@@ -13,7 +14,7 @@ output: html_document
 ```
 
 ```{r load packages, message=FALSE}
-#the following data includes commercial parking locations in Cambridge, polygon data of metered parking spots, and boundaries for open space. We are curious to see the relationship between available Cambridge parking and locations of open/green space.
+#the following data includes commercial parking locations in Cambridge, polygon data of metered parking spots, and boundaries for open space. We are curious to see the relationship between available Cambridge parking and locations of open/green space. We hope that by writing "message=false", that this chunk will not appear in the knit
 
   commercialparking <- st_read("CommParking.geojson")
   meters <- st_read("MetParking.shp.zip")
@@ -29,8 +30,9 @@ parking_plot +
   
 ```
 
-#changing symbology
+
 ```{r}
+#CHANGE COLORS
 parking_plot <- ggplot(commercialparking) +
   geom_sf(shape = 20, color = "blue", size = 4)
 parking_plot +

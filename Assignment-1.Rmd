@@ -1,0 +1,289 @@
+---
+title: "Park(ing)s in Cambridge"
+author:
+- name: "Mike Lidwin + Jeb Polstein"
+  affiliation: "VIS2128: Spatial Analysis | Assignment 01"
+date: "06 September 2021"
+output: 
+  html_document:
+    code_folding: hide
+---
+
+```{r load packages, include=FALSE}
+#above line labels the code chunk as "load packages" without seeing any of the package loading messages
+  library (sf)
+  library(tidyverse)
+  library(ggspatial)
+  library(ggthemes)
+  library(ggeasy)
+
+```
+
+```{r establish files, include=FALSE}
+#the following data includes commercial parking locations in Cambridge, polygon data of metered parking spots, and boundaries for open space. We are curious to see the relationship between available Cambridge parking and locations of open/green space.
+
+  commercialparking <- st_read("CommParking.geojson")
+  meters <- st_read("MetParking.shp.zip")
+  openspace <- st_read ("OpenSpace.shp.zip")
+```
+
+
+##Commercial Parking
+Description: In this version, we laid out the data without customizing its features. We consider this the worst map of our iterations, because it fails to provide a hierarchy of information. The only data that is isolated are the pink dots. However, it is impossible to know what the elements describe without a legend.  
+
+```{r}
+parking_plot <- ggplot(commercialparking) +
+  geom_sf(shape = 20, color = "#CC0066", size = 3)
+parking_plot +
+  geom_sf(data = meters) +
+  geom_sf(data = openspace)
+  
+```
+
+#changing symbology
+```{r}
+parking_plot <- ggplot(commercialparking) +
+  geom_sf(shape = 20, color = "blue", size = 4)
+parking_plot +
+  geom_sf(data = meters, color = "darkorange") +
+  geom_sf(data = openspace, fill = "forestgreen", color = NA)
+```
+
+#changing symbology again
+```{r}
+ggplot() +
+  
+ggtitle("Cambridge Park(ing)") +
+  
+#BASE MAP
+    annotation_map_tile(
+    zoomin = 0, 
+    progress = "none", 
+    type = "cartolight") +
+    geom_sf() +
+    labs(caption = "Map tiles and data by OpenStreetMap") +
+  
+#DATA 
+   geom_sf(
+    data = openspace, 
+    color = NA, 
+    aes(fill = "Open Space")
+    ) +
+  geom_sf(
+    data = meters, 
+    fill = "darkorange",
+    aes(color = "Parking Meters")
+    ) +
+  geom_sf(
+    data = commercialparking, 
+    shape = 20, 
+    size = 3, 
+    fill = NA,
+    aes(color = "Commercial Parking")
+    ) +
+  
+  scale_color_manual(values = c("blue", "darkorange"), name = "") +
+  scale_fill_manual(values = "forestgreen", name = "") +
+  
+  theme_void()
+ 
+
+  
+```
+#changing symbology again
+```{r}
+ggplot() +
+  
+ggtitle("Cambridge Park(ing)") +
+  
+#BASE MAP
+    annotation_map_tile(
+    zoomin = 0, 
+    progress = "none", 
+    type = "cartodark") +
+    geom_sf() +
+    labs(caption = "Map tiles and data by OpenStreetMap") +
+  
+#DATA 
+   geom_sf(
+    data = openspace, 
+    color = NA, 
+    aes(fill = "Open Space")
+    ) +
+  geom_sf(
+    data = meters, 
+    fill = NA,
+    aes(color = "Parking Meters")
+    ) +
+  geom_sf(
+    data = commercialparking, 
+    shape = 20, 
+    size = 3, 
+    aes(color = "Commercial Parking")
+    ) +
+  scale_color_manual(values = c("deeppink", "darkviolet"), name = "") +
+  scale_fill_manual(values = "chartreuse", name = "") +
+  
+  theme_void()
+
+  
+```
+
+#changing symbology again
+```{r}
+ggplot() +
+  
+ggtitle("Cambridge Park(ing)") +
+  
+#BASE MAP
+    annotation_map_tile(
+    zoomin = 0, 
+    progress = "none", 
+    type = "cartolight") +
+    geom_sf() +
+    labs(caption = "Map tiles and data by OpenStreetMap") +
+  
+#DATA 
+   geom_sf(
+    data = openspace, 
+    color = NA, 
+    alpha = 0.5,
+    aes(fill = "Open Space")
+    ) +
+  geom_sf(
+    data = meters, 
+    fill = NA,
+    shape = NA,
+    aes(color = "Parking Meters")
+    ) +
+  geom_sf(
+    data = commercialparking, 
+    shape = 3, 
+    size = 3, 
+    fill = NA,
+    aes(color = "Commercial Parking")
+    ) +
+  
+  scale_color_manual(values = c("brown1", "brown3"), name = "") +
+  scale_fill_manual(values = "forestgreen", name = "") +
+  
+  theme_void()
+```
+
+```{r}
+
+ggplot()+
+ #TITLE + AXIS LABELS
+        #TITLE
+        ggtitle("CAMBRIDGE PARKING IN RELATION TO OPEN SPACE") +
+        theme(
+         
+          #ADJUST TITLE
+           plot.title = element_text(
+            color="black", 
+            size=10, 
+            face="bold", #FONT FACE OPTIONS = PLAIN, BOLD, BOLD.ITALIC, ITALIC
+            vjust = 5,
+            hjust = .5))+
+            theme(plot.margin = unit(c(1,1,1,1), "cm"),
+          
+          #CREATE BACKGROUND
+          plot.background = element_rect(
+            fill = "gray95",
+            colour = "black",
+            size = 1
+            ),
+          
+          panel.background = element_rect(fill = "grey92", colour = NA))+
+          
+  
+        #X AXIS
+#        xlab("LONGITUDE") +
+#        theme(
+#          axis.title.x = element_text(
+#            size=7,
+#            vjust = -2.5)) +
+  
+        #Y  AXIS
+#        ylab("LATITUDE")+
+#        theme(
+#          axis.title.y = element_text(
+#            size=7,
+#            vjust = 5)) +
+  
+  #FORMAT TEXT + LABELS
+     easy_center_title()+
+     easy_move_legend("right")+
+     easy_x_axis_labels_size(7)+
+     easy_y_axis_labels_size(7)+
+
+  #BASE MAP
+      annotation_map_tile(
+        zoomin = 0, 
+        progress = "none", 
+        type = "cartolight",
+        alpha = .5)+
+  
+  #CAPTION
+  labs(
+    caption = "Map tiles and data by OpenStreetMap", 
+    size = .125)+
+  theme(plot.caption = element_text(
+    color = "grey50", 
+    face = "italic", 
+    size = 7))+
+  
+  #DATA
+      #commercial parking
+        geom_sf(data = commercialparking, 
+        aes(color="Commercial Parking Lots"), 
+        alpha = .5, 
+        size = 2,
+        fill = NA,
+        ) +
+      #metered parking
+      geom_sf(
+        data = meters,
+        alpha = 1,
+        fill = NA,
+        aes(color="Metered Parking")
+        ) +
+      #open space
+      geom_sf(
+        data = openspace, 
+        aes(fill="Parks"), 
+        alpha = 0.25, 
+        color = "cadetblue4"
+        ) +
+  
+  #APPEARANCE
+      #themes
+
+      scale_fill_manual(values = "cadetblue4", name = "") +
+      scale_color_manual(values = c("coral2", "coral4"), name = "") +
+
+      #add a scale
+      
+      annotation_scale(location = "bl", 
+                       width_hint = 0.5,
+                       height = unit(0.125,"cm"),
+                       line_width = .125)+
+  
+      #add an arrow
+      annotation_north_arrow(
+        pad_x = unit(7, "cm"),
+        pad_y = unit(.25, "cm"),
+        height = unit(0.5, "cm"),
+        width = unit(0.5, "cm"),
+        
+        #north arrow style
+        style = north_arrow_orienteering(
+          text_size = 1))+
+  
+     theme(panel.background = element_rect(fill = "white", color = "black"),
+           legend.background = element_rect(fill = "grey95", color = NULL))
+     
+```
+
+
+
