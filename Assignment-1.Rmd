@@ -1,18 +1,22 @@
 ---
 title: "Park(ing)s in Cambridge"
-abstract: "Assignment 01"
-author: "Mike Lidwin + Jeb Polstein"
+author:
+- name: "Mike Lidwin + Jeb Polstein"
+  affiliation: "VIS2128: Spatial Analysis | Assignment 01"
 date: "06 September 2021"
 output: 
   html_document:
     code_folding: hide
 ---
+
 ```{r load packages, include=FALSE}
 #above line labels the code chunk as "load packages" without seeing any of the package loading messages
   library (sf)
   library(tidyverse)
   library(ggspatial)
   library(ggthemes)
+  library(ggeasy)
+
 ```
 
 ```{r establish files, include=FALSE}
@@ -22,6 +26,10 @@ output:
   meters <- st_read("MetParking.shp.zip")
   openspace <- st_read ("OpenSpace.shp.zip")
 ```
+
+
+##Commercial Parking
+Description: In this version, we laid out the data without customizing its features. We consider this the worst map of our iterations, because it fails to provide a hierarchy of information. The only data that is isolated are the pink dots. However, it is impossible to know what the elements describe without a legend.  
 
 ```{r}
 parking_plot <- ggplot(commercialparking) +
@@ -78,6 +86,7 @@ ggtitle("Cambridge Park(ing)") +
   scale_fill_manual(values = "forestgreen", name = "") +
   
   theme_void()
+ 
 
   
 ```
@@ -171,19 +180,30 @@ ggplot()+
           plot.title = element_text(
             color="black", 
             size=10, 
-            face="bold.italic", #FONT FACE OPTIONS = PLAIN, BOLD, BOLD.ITALIC, ITALIC
-            hjust = 1))+ #adjust title to center it
-            
+            face="bold", #FONT FACE OPTIONS = PLAIN, BOLD, BOLD.ITALIC, ITALIC
+            vjust = 5,
+            hjust = .5))+
+            theme(plot.margin = unit(c(1.5,1.5,1.5,1.5), "cm"))+
+  
         #X AXIS
-        xlab("LONGITUDE") +
-        theme(
-          axis.title.x = element_text(size=8)) +
+#        xlab("LONGITUDE") +
+#        theme(
+#          axis.title.x = element_text(
+#            size=7,
+#            vjust = -2.5)) +
   
-        #Y AXIS
-        ylab("LATITUDE")+
-        theme(
-          axis.title.y = element_text(size=8)) +
+        #Y  AXIS
+#        ylab("LATITUDE")+
+#        theme(
+#          axis.title.y = element_text(
+#            size=7,
+#            vjust = 5)) +
   
+  #FORMAT TEXT + LABELS
+     easy_center_title()+
+     easy_move_legend("right")+
+     easy_x_axis_labels_size(7)+
+     easy_y_axis_labels_size(7)+
 
   #BASE MAP
       annotation_map_tile(
@@ -239,6 +259,8 @@ ggplot()+
         style = north_arrow_orienteering(
           text_size = 1
           ))
+
+     
 ```
 
 
