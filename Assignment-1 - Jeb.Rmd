@@ -1,5 +1,5 @@
 ---
-title: "Assignment-01"
+title: "Assignment-01 - Jeb"
 author: "mike-lid", "JebP"
 date: "9/6/2021"
 output: html_document
@@ -14,68 +14,14 @@ output: html_document
 ```
 
 ```{r load packages, message=FALSE}
-#the following data includes commercial parking locations in Cambridge, polygon data of metered parking spots, and boundaries for open space. We are curious to see the relationship between available Cambridge parking and locations of open/green space. We hope that by writing "message=false", that this chunk will not appear in the knit
+#the following data includes commercial parking locations in Cambridge, polygon data of metered parking spots, and boundaries for open space. We are curious to see the relationship between available Cambridge parking and locations of open/green space. Comparing the geographic distribution of space for parked cars versus space for people, plants, and animals may yield interesting insights into land use priorities. We hope that by writing "message=false", that this chunk will not appear in the knit
 
   commercialparking <- st_read("CommParking.geojson")
   meters <- st_read("MetParking.shp.zip")
   openspace <- st_read ("OpenSpace.shp.zip")
 ```
 
-```{r}
-parking_plot <- ggplot(commercialparking) +
-  geom_sf(shape = 20, color = "#CC0066", size = 3)
-parking_plot +
-  geom_sf(data = meters) +
-  geom_sf(data = openspace)
-  
-```
-
-
-```{r}
-#CHANGE COLORS
-parking_plot <- ggplot(commercialparking) +
-  geom_sf(shape = 20, color = "blue", size = 4)
-parking_plot +
-  geom_sf(data = meters, color = "darkorange") +
-  geom_sf(data = openspace, fill = "forestgreen", color = NA)
-```
-
-#changing symbology again
-```{r}
-
-#finding centroids of metered parking polygons
-ggplot(st_centroid(meters)) +
-  geom_sf(
-    size = 0.5,
-    shape = 20,
-    color = "brown1",
-    alpha = 0.2    
-    ) +
-  
-#TITLE
-  ggtitle("Cambridge Park(ing)") +
-  
-#BASE MAP
-  
-#DATA 
-   geom_sf(
-    data = openspace, 
-    color = NA, 
-    fill = "forestgreen"
-    ) +
-  geom_sf(
-    data = commercialparking, 
-    shape = 20, 
-    size = 3, 
-    color = "brown1"
-    ) +
-  
-  
-  theme_void()
-
-  
-```
-#changing symbology again
+#This first map uses a high contrast dark theme. Open space polygons and commercial parking points pop from the page, while the metered parking more subtly suggests denser corridors, where people will pay to park on the street. 
 ```{r}
 ggplot() +
   
@@ -115,7 +61,7 @@ ggtitle("Cambridge Park(ing)") +
   
 ```
 
-#changing symbology again
+#This next map uses a toned-down palette. The simple basemap allows the viewer to focus on the point and polygon layers atop it. Changing the symbology of the metered parking polygons to have just a fill with no outline shows the true size of the parking spaces, but makes them a bit hard to find. 
 ```{r}
 ggplot() +
   
@@ -156,7 +102,47 @@ ggtitle("Cambridge Park(ing)") +
   theme_void()
 ```
 
-#changing symbology again - very ugly version
+
+#To test a new representation of the metered parking spaces, we derived the centroids of each metered parking polygon. This means that metered parking now appears as points, like the commercial parking layer. The orange color distinguishes metered parking from commercial parking, while keeping them in the same visual category (i.e. warm color = parking). For an unknown reason, the centroid points become black and deformed when a basemap was added, so I removed the basemap and reinserted coordinate marks for context. 
+
+```{r}
+
+#finding centroids of metered parking polygons
+ggplot(st_centroid(meters)) +
+  geom_sf(
+    size = 0.1,
+    shape = 20,
+    aes(color = "Metered Parking"),
+    ) +
+
+#TITLE
+  ggtitle("Cambridge Park(ing)") +  
+  
+  
+#open space and commercial parking 
+   geom_sf(
+    data = openspace, 
+    color = NA, 
+    aes(fill = "Open Space"),
+    ) +
+  geom_sf(
+    data = commercialparking, 
+    shape = 20, 
+    size = 3, 
+    aes(color = "Commercial Parking"),
+    ) +
+  
+#LEGEND  
+  scale_color_manual(values = c("brown1", "darkorange"), name = "") +
+  scale_fill_manual(values = "forestgreen", name = "") +
+  
+   theme(panel.background = element_rect(fill = "white"),
+        legend.key = element_rect(fill = "white"))
+
+```
+
+#Finally, this ugly version overdoses on color. The basemap distracts from the other layers and it is hard to distinguish what is important. The blue open space polygons might be confused with water. The commercial parking points are too large and the star shape is needlessly complicated. The metered parking polygons are almost invisible. 
+
 ```{r}
 ggplot() +
   
@@ -199,18 +185,5 @@ ggtitle("Cambridge Park(ing)") +
   theme_void()
 ```
 
-
-
-
-
-
-```{r}
-#plotting a 3in x 5in image of 300ppi
-#can replace "jpeg" with "png" or "pdf"
-jpeg("commercial_parking.jpg", width = 5, height = 3, units = "in", res = 300)
-
-dev.off()
-commercial_plot
-```
 
 
