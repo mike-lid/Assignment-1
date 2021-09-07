@@ -1,5 +1,5 @@
 ---
-title: "Assignment-01 - Jeb"
+title: "Assignment-01"
 author: "mike-lid", "JebP"
 date: "9/6/2021"
 output: html_document
@@ -14,7 +14,7 @@ output: html_document
 ```
 
 ```{r load packages, message=FALSE}
-#the following data includes commercial parking locations in Cambridge, polygon data of metered parking spots, and boundaries for open space. We are curious to see the relationship between available Cambridge parking and locations of open/green space. Comparing the geographic distribution of space for parked cars versus space for people, plants, and animals may yield interesting insights into land use priorities. We hope that by writing "message=false", that this chunk will not appear in the knit
+#The following data includes commercial parking locations in Cambridge, polygon data of metered parking spots, and boundaries for open space. We are curious to see the relationship between available Cambridge parking and locations of open/green space. Comparing the geographic distribution of space for parked cars versus space for people, plants, and animals may yield interesting insights into land use priorities. We hope that by writing "message=false", that this chunk will not appear in the knit.
 
   commercialparking <- st_read("CommParking.geojson")
   meters <- st_read("MetParking.shp.zip")
@@ -140,8 +140,9 @@ ggplot(st_centroid(meters)) +
         legend.key = element_rect(fill = "white"))
 
 ```
-
+```
 #Finally, this ugly version overdoses on color. The basemap distracts from the other layers and it is hard to distinguish what is important. The blue open space polygons might be confused with water. The commercial parking points are too large and the star shape is needlessly complicated. The metered parking polygons are almost invisible. 
+```
 
 ```{r}
 ggplot() +
