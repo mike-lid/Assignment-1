@@ -96,6 +96,7 @@ ggtitle("Cambridge Park(ing)") +
    geom_sf(
     data = openspace, 
     color = NA, 
+    alpha = 0.6,
     aes(fill = "Open Space")
     ) +
   geom_sf(
@@ -129,7 +130,7 @@ ggtitle("Cambridge Park(ing)") +
     progress = "none", 
     type = "cartolight") +
     geom_sf() +
-    labs(caption = "Map tiles and data by OpenStreetMap") +
+    labs(caption = "Map tiles by OpenStreetMap; data from City of Cambridge") +
   
 #DATA 
    geom_sf(
@@ -140,32 +141,79 @@ ggtitle("Cambridge Park(ing)") +
     ) +
   geom_sf(
     data = meters, 
-    fill = NA,
+    color = NA,
     shape = NA,
-    aes(color = "Parking Meters")
+    aes(fill = "Metered Parking")
     ) +
   geom_sf(
     data = commercialparking, 
     shape = 3, 
-    size = 3, 
+    size = 2, 
     fill = NA,
     aes(color = "Commercial Parking")
     ) +
   
-  scale_color_manual(values = c("brown1", "brown3"), name = "") +
-  scale_fill_manual(values = "forestgreen", name = "") +
+  scale_fill_manual(values = c("brown3", "forestgreen"), name = "") +
+  scale_color_manual(values = "brown1", name = "") +
   
   theme_void()
 ```
+
+#changing symbology again - very ugly version
+```{r}
+ggplot() +
+  
+ggtitle("Cambridge Park(ing)") +
+  
+#BASE MAP
+  
+    annotation_map_tile(
+    zoomin = 0, 
+    progress = "none", 
+    type = "stamenwatercolor") +
+    geom_sf() +
+    labs(caption = "Map tiles by Stamen Design. Data by OpenStreetMap") +
+
+ 
+#DATA 
+   geom_sf(
+    data = openspace, 
+    color = NA, 
+    alpha = 0.5,
+    aes(fill = "Open Space")
+    ) +
+  geom_sf(
+    data = meters, 
+    color = NA,
+    shape = NA,
+    aes(fill = "Metered Parking")
+    ) +
+  geom_sf(
+    data = commercialparking, 
+    shape = 11, 
+    size = 5, 
+    fill = NA,
+    aes(color = "Commercial Parking")
+    ) +
+  
+  scale_fill_manual(values = c("brown1", "blue"), name = "") +
+  scale_color_manual(values = "brown1", name = "") +
+  
+  theme_void()
+```
+
+
+
+
 
 
 ```{r}
 #plotting a 3in x 5in image of 300ppi
 #can replace "jpeg" with "png" or "pdf"
 jpeg("commercial_parking.jpg", width = 5, height = 3, units = "in", res = 300)
-commercial_plot
-dev.off()
 
+dev.off()
+commercial_plot
 ```
 
 
