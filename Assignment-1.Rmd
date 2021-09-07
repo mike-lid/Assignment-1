@@ -2,7 +2,9 @@
 title: "Assignment-01"
 author: "Mike Lidwin + Jeb Polstein"
 date: "06 September 2021"
-output: html_document
+output: 
+  html_document:
+    code_folding: hide
 ---
 ```{r load packages, include=FALSE}
 #above line labels the code chunk as "load packages" without seeing any of the package loading messages
