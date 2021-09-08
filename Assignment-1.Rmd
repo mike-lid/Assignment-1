@@ -225,12 +225,36 @@ ggplot(st_centroid(meters)) +
 
 **VERSION 05**
 ```
-insert text here
+In the fifth version, we formatted a gray background to help the map stand out on the page, adjusting text size and label fonts so that the focus of the image remains on the map. We added a scale bar and a north arrow for orientation, allowing map users to quickly understand the density and size of the parking spots in relation to the parks. 
+
 ```
 
-``` {r, fig.align = 'center', warning = FALSE}
+``` {r, dpi = 300, fig.align = 'center', warning = FALSE}
 
-ggplot()+
+ggplot(st_centroid(meters)) +
+        
+      #metered parking
+        geom_sf(
+        size = 0.1,
+        shape = 20,
+        aes(color = "Metered Parking"),
+        alpha = .75
+        ) +
+      #commercial parking
+        geom_sf(data = commercialparking, 
+        aes(color="Commercial Parking Lots"), 
+        alpha = .5, 
+        size = 2,
+        fill = NA,
+        ) +
+      #open space
+      geom_sf(
+        data = openspace, 
+        aes(fill="Parks"), 
+        alpha = 0.25, 
+        color = "aquamarine4"
+        ) +
+  
  #TITLE + AXIS LABELS
         #TITLE
         ggtitle("CAMBRIDGE PARKING IN RELATION TO OPEN SPACE") +
@@ -291,41 +315,18 @@ ggplot()+
     face = "italic", 
     size = 7))+
   
-  #DATA
-      #commercial parking
-        geom_sf(data = commercialparking, 
-        aes(color="Commercial Parking Lots"), 
-        alpha = .5, 
-        size = 2,
-        fill = NA,
-        ) +
-      #metered parking
-      geom_sf(
-        data = meters,
-        alpha = 1,
-        fill = NA,
-        aes(color="Metered Parking")
-        ) +
-      #open space
-      geom_sf(
-        data = openspace, 
-        aes(fill="Parks"), 
-        alpha = 0.25, 
-        color = "cadetblue4"
-        ) +
-  
   #APPEARANCE
       #themes
 
-      scale_fill_manual(values = "cadetblue4", name = "") +
-      scale_color_manual(values = c("coral2", "coral4"), name = "") +
+      scale_color_manual(values = c("darkorange1", "brown2"), name = "") +
+      scale_fill_manual(values = "green", name = "") +
 
       #add a scale
       
       annotation_scale(location = "bl", 
-                       width_hint = 0.5,
-                       height = unit(0.125,"cm"),
-                       line_width = .125)+
+        width_hint = 0.5,
+        height = unit(0.125,"cm"),
+        line_width = .125)+
   
       #add an arrow
       annotation_north_arrow(
@@ -339,5 +340,5 @@ ggplot()+
           text_size = 1))+
   
      theme(panel.background = element_rect(fill = "white", color = "black"),
-           legend.background = element_rect(fill = "grey95", color = NULL))
+        legend.background = element_rect(fill = "grey95", color = NULL))
 ```
