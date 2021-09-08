@@ -86,10 +86,10 @@ ggplot() +
 
 **VERSION 02**
 ```
-This next map uses a high contrast dark theme. Open space polygons and commercial parking points pop from the page, while the metered parking more subtly suggests denser corridors, where people will pay to park on the street. While the map includes the names of neighborhoods and districts, the words are very faint and almost illegible. While the dark color scheme helps the map features stand out, the base map loses relevance as a map and serves more as a background color.
+This next map uses a high contrast dark theme and increased the dpi output for the R markdown chunk, in hopes of crisper data information. Open space polygons and commercial parking points pop from the page, while the metered parking more subtly suggests denser corridors, where people will pay to park on the street. While the map includes the names of neighborhoods and districts, the words are very faint and almost illegible. While the dark color scheme helps the map features stand out, the base map loses relevance as a map and serves more as a background color.
 ```
 
-```{r, fig.align = 'center', warning = FALSE}
+```{r, dpi = 300, fig.align = 'center', message = FALSE, warning = FALSE}
 ggplot() +
   
 ggtitle("Cambridge Park(ing)") +
@@ -131,7 +131,7 @@ ggtitle("Cambridge Park(ing)") +
 This next map uses a toned-down palette and the faint basemap allows basic geographic features like water areas to show through. In addition, the simple basemap allows the viewer to focus on the point and polygon layers atop it. In this version, we changed the symbology of the metered parking polygons to have just a fill with no outline in order to the true size of the parking spaces, but makes them a bit hard to find.
 ```
 
-```{r, fig.align = 'center', warning = FALSE}
+```{r, dpi = 300, fig.align = 'center', warning = FALSE}
 ggplot() +
   
 ggtitle("Cambridge Park(ing)") +
@@ -175,7 +175,7 @@ ggtitle("Cambridge Park(ing)") +
 To test a new representation of the metered parking spaces, we derived the centroids of each metered parking polygon. This means that metered parking now appears as points, like the commercial parking layer. The orange color distinguishes metered parking from commercial parking, while keeping them in the same visual category (i.e. warm color = parking). For an unknown reason, the centroid points become black and deformed when a basemap was added, so I removed the basemap and reinserted coordinate marks for context. 
 ```
 
-```{r, fig.align = 'center', warning = FALSE}
+```{r, dpi = 300, fig.align = 'center', warning = FALSE}
 
 #finding centroids of metered parking polygons
 ggplot(st_centroid(meters)) +
@@ -229,7 +229,7 @@ In the fifth version, we formatted a gray background to help the map stand out o
 
 ```
 
-``` {r, dpi = 300, fig.align = 'center', warning = FALSE}
+``` {r, dpi = 300, fig.align = 'center', message = FALSE, warning = FALSE}
 
 ggplot(st_centroid(meters)) +
         
