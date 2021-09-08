@@ -113,17 +113,25 @@ ggplot(st_centroid(meters)) +
     size = 0.1,
     shape = 20,
     aes(color = "Metered Parking"),
+    alpha = .5
     ) +
 
 #TITLE
-  ggtitle("Cambridge Park(ing)") +  
-  
+  ggtitle("CAMBRIDGE PARK [ ING ]") + 
+  theme(
+    plot.title = element_text(
+      color="black", 
+      size=10, 
+      face="bold", #FONT FACE OPTIONS = PLAIN, BOLD, BOLD.ITALIC, ITALIC
+      vjust = 5,
+      hjust = .5))+
   
 #open space and commercial parking 
    geom_sf(
     data = openspace, 
     color = NA, 
     aes(fill = "Open Space"),
+    alpha =.3,
     ) +
   geom_sf(
     data = commercialparking, 
@@ -133,7 +141,7 @@ ggplot(st_centroid(meters)) +
     ) +
   
 #LEGEND  
-  scale_color_manual(values = c("brown1", "darkorange"), name = "") +
+  scale_color_manual(values = c("cyan4", "mediumturquoise"), name = "") +
   scale_fill_manual(values = "forestgreen", name = "") +
   
    theme(panel.background = element_rect(fill = "white"),
@@ -147,14 +155,23 @@ ggplot(st_centroid(meters)) +
 ```{r}
 ggplot() +
   
-ggtitle("Cambridge Park(ing)") +
+#TITLE
+  ggtitle("CAMBRIDGE PARK [ ING ]") + 
+  theme(
+    plot.title = element_text(
+      color="black", 
+      size=10, 
+      face="bold", #FONT FACE OPTIONS = PLAIN, BOLD, BOLD.ITALIC, ITALIC
+      vjust = 5,
+      hjust = .5))+
   
 #BASE MAP
   
     annotation_map_tile(
     zoomin = 0, 
     progress = "none", 
-    type = "stamenwatercolor") +
+    type = "stamenwatercolor",
+    alpha = .5) +
     geom_sf() +
     labs(caption = "Map tiles by Stamen Design. Data by OpenStreetMap") +
 
@@ -185,6 +202,4 @@ ggtitle("Cambridge Park(ing)") +
   
   theme_void()
 ```
-
-
 
