@@ -11,87 +11,85 @@ output:
 
 ```{r load packages, include=FALSE}
 #above line labels the code chunk as "load packages" without seeing any of the package loading messages
+  fig.align = 'center'  
+
   library (sf)
   library(tidyverse)
   library(ggspatial)
   library(ggthemes)
   library(ggeasy)
-
 ```
 
-```{r establish files, include=FALSE}
-#the following data includes commercial parking locations in Cambridge, polygon data of metered parking spots, and boundaries for open space. We are curious to see the relationship between available Cambridge parking and locations of open/green space.
+```{r load data, include=FALSE}
+#The following data includes commercial parking locations in Cambridge, polygon data of metered parking spots, and boundaries for open space. We are curious to see the relationship between available Cambridge parking and locations of open/green space. Comparing the geographic distribution of space for parked cars versus space for people, plants, and animals may yield interesting insights into land use priorities. We hope that by writing "message=false", that this chunk will not appear in the knit.
 
   commercialparking <- st_read("CommParking.geojson")
   meters <- st_read("MetParking.shp.zip")
   openspace <- st_read ("OpenSpace.shp.zip")
 ```
 
-
-##Commercial Parking
-Description: In this version, we laid out the data without customizing its features. We consider this the worst map of our iterations, because it fails to provide a hierarchy of information. The only data that is isolated are the pink dots. However, it is impossible to know what the elements describe without a legend.  
-
-```{r}
-parking_plot <- ggplot(commercialparking) +
-  geom_sf(shape = 20, color = "#CC0066", size = 3)
-parking_plot +
-  geom_sf(data = meters) +
-  geom_sf(data = openspace)
-  
+**VERSION 01**
+```
+Our first attempt at the map demonstrates how important formatting maps can be in communicating information effectively. In this example, the basemap distracts from the other layers and it is hard to distinguish what the map's features represent. The open space polygons are colored blue, which might be confused with water. The commercial parking points are too large and the star shape adds visual complexity, which . The metered parking polygons are almost invisible. 
 ```
 
-#changing symbology
-```{r}
-parking_plot <- ggplot(commercialparking) +
-  geom_sf(shape = 20, color = "blue", size = 4)
-parking_plot +
-  geom_sf(data = meters, color = "darkorange") +
-  geom_sf(data = openspace, fill = "forestgreen", color = NA)
-```
-
-#changing symbology again
-```{r}
+```{r, fig.align = 'center', warning = FALSE }
 ggplot() +
   
-ggtitle("Cambridge Park(ing)") +
+#TITLE
+  ggtitle("CAMBRIDGE PARK [ ING ]") + 
+  theme(
+    plot.title = element_text(
+      color="black", 
+      size=10, 
+      face="bold", #FONT FACE OPTIONS = PLAIN, BOLD, BOLD.ITALIC, ITALIC
+      vjust = 5,
+      hjust = .5))+
   
 #BASE MAP
+  
     annotation_map_tile(
     zoomin = 0, 
     progress = "none", 
-    type = "cartolight") +
+    type = "stamenwatercolor",
+    alpha = .5) +
     geom_sf() +
-    labs(caption = "Map tiles and data by OpenStreetMap") +
-  
+    labs(caption = "Map tiles by Stamen Design. Data by OpenStreetMap") +
+
+ 
 #DATA 
    geom_sf(
     data = openspace, 
     color = NA, 
+    alpha = 0.5,
     aes(fill = "Open Space")
     ) +
   geom_sf(
     data = meters, 
-    fill = "darkorange",
-    aes(color = "Parking Meters")
+    color = NA,
+    shape = NA,
+    aes(fill = "Metered Parking")
     ) +
   geom_sf(
     data = commercialparking, 
-    shape = 20, 
-    size = 3, 
+    shape = 11, 
+    size = 5, 
     fill = NA,
     aes(color = "Commercial Parking")
     ) +
   
-  scale_color_manual(values = c("blue", "darkorange"), name = "") +
-  scale_fill_manual(values = "forestgreen", name = "") +
+  scale_fill_manual(values = c("brown1", "blue"), name = "") +
+  scale_color_manual(values = "brown1", name = "") +
   
   theme_void()
- 
-
-  
 ```
-#changing symbology again
-```{r}
+
+**VERSION 02**
+```
+This next map uses a high contrast dark theme. Open space polygons and commercial parking points pop from the page, while the metered parking more subtly suggests denser corridors, where people will pay to park on the street. While the map includes the names of neighborhoods and districts, the words are very faint and almost illegible. While the dark color scheme helps the map features stand out, the base map loses relevance as a map and serves more as a background color.
+```
+
+```{r, fig.align = 'center', warning = FALSE}
 ggplot() +
   
 ggtitle("Cambridge Park(ing)") +
@@ -108,11 +106,12 @@ ggtitle("Cambridge Park(ing)") +
    geom_sf(
     data = openspace, 
     color = NA, 
+    alpha = 0.6,
     aes(fill = "Open Space")
     ) +
   geom_sf(
     data = meters, 
-    fill = NA,
+    fill = "white",
     aes(color = "Parking Meters")
     ) +
   geom_sf(
@@ -125,12 +124,14 @@ ggtitle("Cambridge Park(ing)") +
   scale_fill_manual(values = "chartreuse", name = "") +
   
   theme_void()
-
-  
 ```
 
-#changing symbology again
-```{r}
+**VERSION 03**
+```
+This next map uses a toned-down palette and the faint basemap allows basic geographic features like water areas to show through. In addition, the simple basemap allows the viewer to focus on the point and polygon layers atop it. In this version, we changed the symbology of the metered parking polygons to have just a fill with no outline in order to the true size of the parking spaces, but makes them a bit hard to find.
+```
+
+```{r, fig.align = 'center', warning = FALSE}
 ggplot() +
   
 ggtitle("Cambridge Park(ing)") +
@@ -141,7 +142,7 @@ ggtitle("Cambridge Park(ing)") +
     progress = "none", 
     type = "cartolight") +
     geom_sf() +
-    labs(caption = "Map tiles and data by OpenStreetMap") +
+    labs(caption = "Map tiles by OpenStreetMap; data from City of Cambridge") +
   
 #DATA 
    geom_sf(
@@ -152,25 +153,82 @@ ggtitle("Cambridge Park(ing)") +
     ) +
   geom_sf(
     data = meters, 
-    fill = NA,
+    color = NA,
     shape = NA,
-    aes(color = "Parking Meters")
+    aes(fill = "Metered Parking")
     ) +
   geom_sf(
     data = commercialparking, 
     shape = 3, 
-    size = 3, 
+    size = 2, 
     fill = NA,
     aes(color = "Commercial Parking")
     ) +
   
-  scale_color_manual(values = c("brown1", "brown3"), name = "") +
-  scale_fill_manual(values = "forestgreen", name = "") +
+  scale_fill_manual(values = c("brown3", "forestgreen"), name = "") +
+  scale_color_manual(values = "brown1", name = "") +
   
   theme_void()
 ```
+**VERSION 04**
+```
+To test a new representation of the metered parking spaces, we derived the centroids of each metered parking polygon. This means that metered parking now appears as points, like the commercial parking layer. The orange color distinguishes metered parking from commercial parking, while keeping them in the same visual category (i.e. warm color = parking). For an unknown reason, the centroid points become black and deformed when a basemap was added, so I removed the basemap and reinserted coordinate marks for context. 
+```
 
-```{r}
+```{r, fig.align = 'center', warning = FALSE}
+
+#finding centroids of metered parking polygons
+ggplot(st_centroid(meters)) +
+  geom_sf(
+    size = 0.1,
+    shape = 20,
+    aes(color = "Metered Parking"),
+    alpha = .5
+    ) +
+
+#TITLE
+  ggtitle("CAMBRIDGE PARK [ ING ]") + 
+  theme(
+    plot.title = element_text(
+      color="black", 
+      size=11, 
+      face="bold", #FONT FACE OPTIONS = PLAIN, BOLD, BOLD.ITALIC, ITALIC
+      ))+
+  
+#FORMAT TEXT + LABELS
+  easy_center_title()+
+  easy_move_legend("right")+
+  easy_x_axis_labels_size(8)+
+  easy_y_axis_labels_size(8)+
+  
+#open space and commercial parking 
+   geom_sf(
+    data = openspace, 
+    color = NA, 
+    aes(fill = "Open Space"),
+    alpha =.3,
+    ) +
+  geom_sf(
+    data = commercialparking, 
+    shape = 20, 
+    size = 3, 
+    aes(color = "Commercial Parking"),
+    ) +
+  
+#LEGEND  
+  scale_color_manual(values = c("cyan4", "mediumturquoise"), name = "") +
+  scale_fill_manual(values = "forestgreen", name = "") +
+  
+   theme(panel.background = element_rect(fill = "white"),
+        legend.key = element_rect(fill = "white"))
+```
+
+**VERSION 05**
+```
+insert text here
+```
+
+``` {r, fig.align = 'center', warning = FALSE}
 
 ggplot()+
  #TITLE + AXIS LABELS
@@ -282,8 +340,4 @@ ggplot()+
   
      theme(panel.background = element_rect(fill = "white", color = "black"),
            legend.background = element_rect(fill = "grey95", color = NULL))
-     
 ```
-
-
-
