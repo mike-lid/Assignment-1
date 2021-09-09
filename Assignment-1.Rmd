@@ -268,7 +268,6 @@ ggplot(st_centroid(meters)) +
         data = Cambridge, 
         fill = NA,
         color = "black",
-        line_width = .5,
         alpha = 0.25, 
         linetype = "dashed"
         ) +
