@@ -20,17 +20,23 @@ output:
   library(ggeasy)
 ```
 
-```{r load data, include=FALSE}
-#The following data includes commercial parking locations in Cambridge, polygon data of metered parking spots, and boundaries for open space. We are curious to see the relationship between available Cambridge parking and locations of open/green space. Comparing the geographic distribution of space for parked cars versus space for people, plants, and animals may yield interesting insights into land use priorities. We hope that by writing "message=false", that this chunk will not appear in the knit.
+```
+ABSTRACT: The following data maps commercial parking locations in Cambridge, polygon data of metered parking spots, and boundaries for green, open spaces (including parks). We were curious to see the relationship between available Cambridge parking and locations of open/green space. 
 
+Comparing the geographic distribution of space for parked cars versus space for people, plants, and animals yielded interesting insights into land use priorities. For example, much of Cambridge's metered parking locations only reinforce the existing commercial parking, the majority of which are located away from open spaces. Based on our graphs, the open spaces in Cambridge seem to be only accessible to those who can walk or bike. This finding, although simple, is important in realizing that the open spaces (which are often public spaces) exclude populations of people who may be commuting in to Cambridge or who live away from these parks. Does the public space in Cambridge truly function as public spaces?
+```
+
+```{r load data, include=FALSE}
+#include = FALSE and message = FALSE  removes this line of code from the visual output of the html
   commercialparking <- st_read("CommParking.geojson")
   meters <- st_read("MetParking.shp.zip")
   openspace <- st_read ("OpenSpace.shp.zip")
+  Cambridge <- st_read ("Cambridge_Boundary.shp.zip")
 ```
 
 **VERSION 01**
 ```
-Our first attempt at the map demonstrates how important formatting maps can be in communicating information effectively. In this example, the basemap distracts from the other layers and it is hard to distinguish what the map's features represent. The open space polygons are colored blue, which might be confused with water. The commercial parking points are too large and the star shape adds visual complexity, which . The metered parking polygons are almost invisible. 
+Our first attempt at the map demonstrates how important formatting maps can be in communicating information effectively. In this example, the basemap distracts from the other layers and it is hard to distinguish what the map's features represent. The open space polygons are colored blue, which might be confused with water. The commercial parking points are too large and the star shape adds unnecessary visual complexity, which distracts from the overall goals of the map: the metered parking polygons, in comparison, are almost invisible. 
 ```
 
 ```{r, fig.align = 'center', warning = FALSE }
@@ -142,7 +148,7 @@ ggtitle("Cambridge Park(ing)") +
     progress = "none", 
     type = "cartolight") +
     geom_sf() +
-    labs(caption = "Map tiles by OpenStreetMap; data from City of Cambridge") +
+    labs(caption = "Map tiles and data by OpenStreetMap") +
   
 #DATA 
    geom_sf(
@@ -172,7 +178,7 @@ ggtitle("Cambridge Park(ing)") +
 ```
 **VERSION 04**
 ```
-To test a new representation of the metered parking spaces, we derived the centroids of each metered parking polygon. This means that metered parking now appears as points, like the commercial parking layer. The orange color distinguishes metered parking from commercial parking, while keeping them in the same visual category (i.e. warm color = parking). For an unknown reason, the centroid points become black and deformed when a basemap was added, so I removed the basemap and reinserted coordinate marks for context. 
+To test a new representation of the metered parking spaces, we derived the centroids of each metered parking polygon. This means that metered parking now appears as points, like the commercial parking layer. The lighter blue color distinguishes metered parking from commercial parking, while keeping them in the same visual category (i.e. blue tones = parking). For an unknown reason, the centroid points become black and deformed when a basemap was added, so we removed the basemap and reinserted coordinate marks for context. 
 ```
 
 ```{r, dpi = 300, fig.align = 'center', warning = FALSE}
@@ -225,7 +231,7 @@ ggplot(st_centroid(meters)) +
 
 **VERSION 05**
 ```
-In the fifth version, we formatted a gray background to help the map stand out on the page, adjusting text size and label fonts so that the focus of the image remains on the map. We added a scale bar and a north arrow for orientation, allowing map users to quickly understand the density and size of the parking spots in relation to the parks. 
+In the fifth version, we formatted a gray background to help the map stand out on the page, adjusting text size and label fonts so that the focus of the image remains on the map. We added a scale bar and a north arrow for orientation, allowing map users to quickly understand the density and size of the parking spots in relation to the parks. In this version, we chose to represent parking with warmer colors, so that there is a strong visual contrast between the open spaces (green) and those spaces paved and occupied for parking (warm color tones).
 
 ```
 
@@ -253,6 +259,14 @@ ggplot(st_centroid(meters)) +
         aes(fill="Parks"), 
         alpha = 0.25, 
         color = "aquamarine4"
+        ) +
+  
+      #city boundary
+      geom_sf(
+        data = Cambridge, 
+        fill = NA,
+        color = "black",
+        alpha = 0.25, 
         ) +
   
  #TITLE + AXIS LABELS
