@@ -270,6 +270,7 @@ ggplot(st_centroid(meters)) +
         color = "black",
         line_width = .5,
         alpha = 0.25, 
+        linetype = "dashed"
         ) +
   
  #TITLE + AXIS LABELS
